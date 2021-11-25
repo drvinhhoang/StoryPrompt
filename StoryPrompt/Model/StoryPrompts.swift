@@ -12,6 +12,7 @@ class StoryPrompts {
     let prompts = stubs[genre.rawValue]    //
     return prompts[Int.random(in: 0 ..< prompts.count)]
   }
+    
 
   static var stubs = [
     [
