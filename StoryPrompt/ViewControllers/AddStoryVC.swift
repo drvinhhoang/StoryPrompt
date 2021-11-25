@@ -39,7 +39,7 @@ class AddStoryVC: UIViewController {
     }
     
     @IBAction func generateStoryPrompt(_ sender: Any) {
-        updateStoryPrompt()
+       // updateStoryPrompt()
         
         if storyPrompt.isValid() {
             performSegue(withIdentifier: "StoryPrompt", sender: nil)
@@ -55,6 +55,10 @@ class AddStoryVC: UIViewController {
         print(storyPrompt)
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         numberSlider.value = 7.5
@@ -62,14 +66,21 @@ class AddStoryVC: UIViewController {
         storyPromptImageView.isUserInteractionEnabled = true
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(changeImage))
         storyPromptImageView.addGestureRecognizer(gestureRecognizer)
+        
+        #warning("newly added")
+        NotificationCenter.default.addObserver(self, selector: #selector(updateStoryPrompt), name: UIResponder.keyboardDidHideNotification, object: nil)
+        
+        
     }
     
     
     
-    func updateStoryPrompt() {
+  @objc func updateStoryPrompt() {
+      print("updateStoryPrompt called")
         storyPrompt.noun = nounTextField.text ?? ""
         storyPrompt.adjective = adjectiveTextField.text ?? ""
         storyPrompt.verb = verbTextField.text ?? ""
+      print("storyPrompt.noun: \(storyPrompt.noun), storyPrompt.adjective: \(storyPrompt.adjective)")
         
     }
     
@@ -101,7 +112,7 @@ extension AddStoryVC: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        updateStoryPrompt()
+       // updateStoryPrompt()
         return true
     }
     
